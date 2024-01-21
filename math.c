@@ -19,7 +19,7 @@ void add(stack_t **stack, __attribute__((unused))unsigned int linenumber)
 	}
 	else
 	{
-		dprintf(STDERR_FILENO, "L%u: can't add, stack too short\n",
+		wprintf(STDERR_FILENO, "L%u: can't add, stack too short\n",
 				monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
@@ -44,7 +44,7 @@ void sub(stack_t **stack, __attribute__((unused))unsigned int linenumber)
 	}
 	else
 	{
-		dprintf(STDERR_FILENO, "L%u: can't sub, stack too short\n",
+		wprintf(STDERR_FILENO, "L%u: can't sub, stack too short\n",
 				monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
@@ -61,14 +61,14 @@ void div_op(stack_t **stack, __attribute__((unused))unsigned int linenumber)
 
 	if (!*stack || !(*stack)->next)
 	{
-		dprintf(STDERR_FILENO, "L%u: can't div, stack too short\n"
+		wprintf(STDERR_FILENO, "L%u: can't div, stack too short\n"
 				, monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
 	}
 	if ((*stack)->n == 0)
 	{
-		dprintf(STDERR_FILENO, "L%u: division by zero\n", monty.line_number);
+		wprintf(STDERR_FILENO, "L%u: division by zero\n", monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
 	}
@@ -101,7 +101,7 @@ void mul(stack_t **stack, __attribute__((unused))unsigned int linenumber)
 	}
 	else
 	{
-		dprintf(STDERR_FILENO, "L%u: can't mul, stack too short\n",
+		wprintf(STDERR_FILENO, "L%u: can't mul, stack too short\n",
 				monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
@@ -118,7 +118,7 @@ void mod(stack_t **stack, __attribute__((unused))unsigned int linenumber)
 
 	if (!*stack || !(*stack)->next)
 	{
-		dprintf(STDERR_FILENO, "L%u: can't mod, stack too short\n"
+		wprintf(STDERR_FILENO, "L%u: can't mod, stack too short\n"
 				, monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
@@ -126,7 +126,7 @@ void mod(stack_t **stack, __attribute__((unused))unsigned int linenumber)
 
 	if ((*stack)->n == 0)
 	{
-		dprintf(STDERR_FILENO, "L%u: division by zero\n", monty.line_number);
+		wprintf(STDERR_FILENO, "L%u: division by zero\n", monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
 	}

@@ -9,13 +9,13 @@ void open_up(int argc, char *filename)
 {
 	if (argc != 2)
 	{
-		dprintf(STDERR_FILENO, "USAGE: monty file\n");
+		wprintf(STDERR_FILENO, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	monty.file = fopen(filename, "r");
 	if (!monty.file)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", filename);
+		wprintf(STDERR_FILENO, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -93,10 +93,10 @@ void op_choose(stack_t **stack, char *opcode)
 	}
 	if (strcmp(opcode, "push"))
 	{
-		dprintf(STDERR_FILENO, "L%u: ", monty.line_number);
-		dprintf(STDERR_FILENO, "unknown instruction %s\n", opcode);
+		wprintf(STDERR_FILENO, "L%u: ", monty.line_number);
+		wprintf(STDERR_FILENO, "unknown instruction %s\n", opcode);
 	}
 	else
-		dprintf(STDERR_FILENO, "L%u: usage: push integer\n", monty.line_number);
+		wprintf(STDERR_FILENO, "L%u: usage: push integer\n", monty.line_number);
 	exit(EXIT_FAILURE);
 }

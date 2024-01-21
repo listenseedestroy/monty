@@ -62,7 +62,7 @@ void push_queue(char *argument)
 
 	if (!check_input(argument))
 	{
-		dprintf(STDERR_FILENO, "L%u: usage: push integer\n",
+		wprintf(STDERR_FILENO, "L%u: usage: push integer\n",
 				monty.line_number);
 		free_it_all();
 		exit(EXIT_FAILURE);
@@ -72,7 +72,7 @@ void push_queue(char *argument)
 	new = malloc(sizeof(stack_t));
 	if (!new)
 	{
-		dprintf(STDERR_FILENO, "Error: malloc failed\n");
+		wprintf(STDERR_FILENO, "Error: malloc failed\n");
 		free_it_all();
 		exit(EXIT_FAILURE);
 	}
