@@ -1,102 +1,34 @@
 #include "monty.h"
 
+glob_t glob;
+
 /**
- * open_up - open a monty and validate input
- * @argc: args count
- * @filename: path to monty
+ * main - entry point for the monty program
+ * @argc: number of command line arguments
+ * @argv: array of command line argument strings
+ *
+ * Return: 0 on success, non-zero on failure
  */
-void open_up(int argc, char *filename)
+int main(int argc, char *argv[])
 {
+	stack_t *stack = NULL;
+
 	if (argc != 2)
 	{
-		wprintf(STDERR_FILENO, "USAGE: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	monty.file = fopen(filename, "r");
-	if (!monty.file)
+
+	glob.file = fopen(argv[1], "r");
+	if (glob.file == NULL)
 	{
-		wprintf(STDERR_FILENO, "Error: Can't open file %s\n", filename);
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-}
 
-/**
- * read_line - reads and executes each line of input from monty file
- */
-void read_line(void)
-{
-	size_t len = 0;
-	ssize_t read;
-	char *opcode, *data;
-
-	while ((read = getline(&monty.line, &len, monty.file) != -1))
-	{
-		opcode = strtok(monty.line, " ");
-		if (*opcode == '#' || *opcode == '\n')
-		{
-			monty.line_number++;
-			continue;
-		}
-		else if (strcmp(opcode, "push") == 0)
-		{
-			data = strtok(NULL, " \n");
-			if (monty.is_queue)
-			{
-				push_queue(data);
-			}
-			else
-				push(data);
-		}
-		else
-			op_choose(&monty.stack, opcode);
-		monty.line_number++;
-	}
-}
-
-/**
- * op_choose - find & call the function that corresponds with the opcode
- * @stack: **pointer to stack
- * @opcode: opcode from this line of our monty file
- */
-void op_choose(stack_t **stack, char *opcode)
-{
-	int i;
-	char *op;
-	instruction_t fncs[] = {
-		{"pall", pall},
-		{"pint", pint},
-		{"pop", pop},
-		{"swap", swap},
-		{"add", add},
-		{"nop", nop},
-		{"sub", sub},
-		{"div", div_op},
-		{"mul", mul},
-		{"mod", mod},
-		{"pchar", pchar},
-		{"pstr", pstr},
-		{"rotl", rotl},
-		{"rotr", rotr},
-		{"stack", stack_op},
-		{"queue", queue_op},
-		{NULL, NULL}
-	};
-
-	op = strtok(opcode, "\n");
-	for (i = 0; fncs[i].opcode; i++)
-	{
-		if (strcmp(op, fncs[i].opcode) == 0)
-		{
-			fncs[i].f(stack, monty.line_number);
-			return;
-		}
-	}
-	if (strcmp(opcode, "push"))
-	{
-		wprintf(STDERR_FILENO, "L%u: ", monty.line_number);
-		wprintf(STDERR_FILENO, "unknown instruction %s\n", opcode);
-	}
-	else
-		wprintf(STDERR_FILENO, "L%u: usage: push integer\n", monty.line_number);
-	exit(EXIT_FAILURE);
+	execute_file(&stack);
+	fclose(glob.file);
+	free(glob.line);
+	free_stack(stack);
+	exit(EXIT_SUCCESS);
 }
